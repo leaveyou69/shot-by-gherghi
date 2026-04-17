@@ -1474,11 +1474,10 @@
 
       <div class="form-shell reveal" data-d="2">
         <form class="form-core" id="contactForm">
-          <!-- Web3Forms: înlocuiește YOUR_ACCESS_KEY cu key-ul primit pe email -->
-          <input type="hidden" name="access_key" value="58fa1c88-7477-4000-9293-97875eb62165">
-          <input type="hidden" name="subject" value="Cerere nouă — Shot by Gherghi">
-          <input type="hidden" name="from_name" value="Shot by Gherghi Website">
-          <input type="checkbox" name="botcheck" style="display:none">
+          <input type="hidden" name="_subject" value="Cerere nouă — Shot by Gherghi">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="text" name="_honey" style="display:none">
 
           <div class="form-row">
             <div class="form-group">
@@ -1599,7 +1598,7 @@
     });
   });
 
-  /* ── Contact form — Web3Forms ── */
+  /* ── Contact form — FormSubmit AJAX ── */
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', async function(e) {
@@ -1616,13 +1615,14 @@
       const formData = new FormData(contactForm);
 
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
+        const res = await fetch('https://formsubmit.co/ajax/gherghinescualexandruxig@gmail.com', {
           method: 'POST',
+          headers: { 'Accept': 'application/json' },
           body: formData
         });
         const data = await res.json();
 
-        if (data.success) {
+        if (data.success === 'true' || data.success === true) {
           successMsg.style.display = 'block';
           errorMsg.style.display = 'none';
           contactForm.reset();
