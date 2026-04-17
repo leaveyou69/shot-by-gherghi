@@ -240,6 +240,9 @@
       z-index: 0;
     }
 
+    .hero-vid-mobile { display: none; }
+    .hero-vid-desktop { display: block; }
+
     .hero-overlay {
       position: absolute;
       inset: 0;
@@ -1070,11 +1073,8 @@
         min-height: 56vw;
       }
 
-      .hero video {
-        object-fit: contain;
-        object-position: center center;
-        background: var(--black);
-      }
+      .hero-vid-desktop { display: none; }
+      .hero-vid-mobile { display: block; }
 
       .hero-content {
         padding: 0 1.5rem;
@@ -1180,8 +1180,11 @@
 
 <!-- ░░░ HERO ░░░ -->
 <section class="hero">
-  <video autoplay muted loop playsinline>
+  <video class="hero-vid-desktop" autoplay muted loop playsinline>
     <source src="xx.mp4" type="video/mp4">
+  </video>
+  <video class="hero-vid-mobile" autoplay muted loop playsinline>
+    <source src="yy.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
 
