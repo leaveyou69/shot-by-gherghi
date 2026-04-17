@@ -1473,10 +1473,13 @@
       </div>
 
       <div class="form-shell reveal" data-d="2">
-        <form class="form-core" id="contactForm">
+        <form class="form-core"
+              action="https://formsubmit.co/gherghinescualexandruxig@gmail.com"
+              method="POST">
           <input type="hidden" name="_subject" value="Cerere nouă — Shot by Gherghi">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://shot-by-gherghi.vercel.app/shot-by-gherghi.html?sent=1">
           <input type="text" name="_honey" style="display:none">
 
           <div class="form-row">
@@ -1518,17 +1521,10 @@
             <textarea name="Mesaj" class="form-input" placeholder="Spune-ne mai multe despre evenimentul tău..."></textarea>
           </div>
 
-          <button class="form-submit" type="submit" id="submitBtn">
+          <button class="form-submit" type="submit">
             Trimite mesajul
             <span class="ico">→</span>
           </button>
-
-          <div id="form-success" style="display:none; margin-top:1.25rem; padding:1rem 1.25rem; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.25); border-radius:0.85rem; font-size:0.8rem; color:#C9A84C; text-align:center; letter-spacing:0.04em;">
-            ✓ Mesajul a fost trimis! Îți răspundem în maxim 24h.
-          </div>
-          <div id="form-error" style="display:none; margin-top:1.25rem; padding:1rem 1.25rem; background:rgba(255,80,80,0.07); border:1px solid rgba(255,80,80,0.2); border-radius:0.85rem; font-size:0.8rem; color:#ff6b6b; text-align:center; letter-spacing:0.04em;">
-            ✗ Eroare la trimitere. Încearcă din nou sau sună-ne direct.
-          </div>
         </form>
       </div>
     </div>
@@ -1598,46 +1594,15 @@
     });
   });
 
-  /* ── Contact form — FormSubmit AJAX ── */
-  const contactForm = document.getElementById('contactForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const btn = document.getElementById('submitBtn');
-      const successMsg = document.getElementById('form-success');
-      const errorMsg = document.getElementById('form-error');
-
-      btn.disabled = true;
-      btn.style.opacity = '0.6';
-      btn.querySelector('.ico').textContent = '…';
-
-      const formData = new FormData(contactForm);
-
-      try {
-        const res = await fetch('https://formsubmit.co/ajax/gherghinescualexandruxig@gmail.com', {
-          method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: formData
-        });
-        const data = await res.json();
-
-        if (data.success === 'true' || data.success === true) {
-          successMsg.style.display = 'block';
-          errorMsg.style.display = 'none';
-          contactForm.reset();
-          btn.querySelector('.ico').textContent = '✓';
-        } else {
-          throw new Error('Submit failed');
-        }
-      } catch {
-        errorMsg.style.display = 'block';
-        successMsg.style.display = 'none';
-        btn.disabled = false;
-        btn.style.opacity = '1';
-        btn.querySelector('.ico').textContent = '→';
-      }
-    });
+  /* ── Show success message if redirected back after form submit ── */
+  if (window.location.search.includes('sent=1')) {
+    const contact = document.getElementById('contact');
+    if (contact) contact.scrollIntoView({ behavior: 'smooth' });
+    const msg = document.createElement('div');
+    msg.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:rgba(201,168,76,0.95);color:#070707;padding:1rem 2rem;border-radius:9999px;font-size:0.8rem;font-weight:600;letter-spacing:0.08em;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,0.3)';
+    msg.textContent = '✓ Mesajul a fost trimis! Îți răspundem în maxim 24h.';
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 5000);
   }
 </script>
 </body>
