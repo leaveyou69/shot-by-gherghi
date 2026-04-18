@@ -20,6 +20,8 @@
   <!-- Favicon inline -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23070707'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='36' font-weight='400' fill='%23C9A84C'%3EG%3C/text%3E%3C/svg%3E">
 
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <!-- DNS prefetch -->
   <link rel="dns-prefetch" href="https://images.unsplash.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1156,9 +1158,58 @@
 
       .gallery-grid { margin-top: 2.5rem; }
     }
+
+    /* ─────────────────── LOADER ─────────────────── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    #loader-curtain {
+      position: absolute;
+      inset: 0;
+      background: var(--black);
+      transform-origin: bottom;
+    }
+
+    #loader-logo {
+      position: relative;
+      z-index: 1;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 7vw, 5rem);
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      font-weight: 300;
+      text-transform: uppercase;
+      opacity: 0;
+    }
+
+    /* ─────────────────── BLUR WORDS ─────────────────── */
+    .blur-word {
+      display: inline-block;
+      opacity: 0;
+      filter: blur(18px);
+      transform: translateY(24px);
+      will-change: transform, opacity, filter;
+    }
+
+    .hero-eyebrow-wrap,
+    .hero-sub,
+    .hero-actions { opacity: 0; }
   </style>
 </head>
 <body>
+
+<!-- ░░░ LOADER ░░░ -->
+<div id="loader">
+  <div id="loader-curtain"></div>
+  <div id="loader-logo">GHERGHI</div>
+</div>
 
 <!-- ░░░ WHATSAPP FLOAT ░░░ -->
 <a class="wa-float" href="https://wa.me/40741334750?text=Bună%2C%20aș%20dori%20mai%20multe%20informații%20despre%20serviciile%20voastre!" target="_blank" rel="noopener">
@@ -1212,10 +1263,10 @@
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <div class="eyebrow">Shot by Gherghi · Foto &amp; Video</div>
+    <div class="eyebrow hero-eyebrow-wrap">Shot by Gherghi · Foto &amp; Video</div>
     <h1 class="hero-title">
-      Your moments,<br>
-      <em>our craft.</em>
+      <span class="blur-word">Your</span> <span class="blur-word">moments,</span><br>
+      <em><span class="blur-word">our</span> <span class="blur-word">craft.</span></em>
     </h1>
     <p class="hero-sub">Fotografie și videografie de excepție pentru nunți, botezuri, majorate și evenimente corporate.</p>
     <div class="hero-actions">
@@ -1571,6 +1622,27 @@
 </footer>
 
 <script>
+  /* ── GSAP: Loader + Hero Blur Reveal ── */
+  window.addEventListener('DOMContentLoaded', function() {
+    const tl = gsap.timeline();
+    tl
+      .to('#loader-logo', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0.2)
+      .to('#loader-curtain', { yPercent: -100, duration: 1.1, ease: 'power3.inOut' }, 0.9)
+      .to('#loader-logo', { opacity: 0, duration: 0.3 }, 1.1)
+      .set('#loader', { display: 'none' }, 2.1)
+      .to('.blur-word', {
+        opacity: 1,
+        filter: 'blur(0px)',
+        y: 0,
+        duration: 1.2,
+        ease: 'power3.out',
+        stagger: 0.15
+      }, 1.5)
+      .to('.hero-eyebrow-wrap', { opacity: 1, duration: 0.7, ease: 'power3.out' }, 1.7)
+      .to('.hero-sub', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 1.9)
+      .to('.hero-actions', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 2.1);
+  });
+
   /* ── Load mobile video only on mobile ── */
   (function() {
     const mobileVid = document.querySelector('.hero-vid-mobile');
